@@ -2,3 +2,7 @@
 
 .env
 .env.sample
+
+
+.idea/
+/__pycache__/
