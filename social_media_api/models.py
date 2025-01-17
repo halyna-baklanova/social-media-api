@@ -1,5 +1,6 @@
+from django.utils.timezone import now
+
 from django.db import models
-from django.contrib import admin
 
 
 class Profile(models.Model):
@@ -13,8 +14,9 @@ class Profile(models.Model):
 
 
 class Post(models.Model):
-    pass
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(default=now)
 
-
-class Comment(models.Model):
-    pass
+    def __str__(self):
+        return self.text
