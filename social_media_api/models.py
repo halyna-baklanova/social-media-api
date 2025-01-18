@@ -1,15 +1,10 @@
 from django.db import models
-from django.conf import settings
 
 from django.utils.timezone import now
 
+from django.contrib.auth.models import AbstractUser
 
 class Profile(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="profile"
-    )
     full_name = models.CharField(max_length=100)
     bio = models.CharField(max_length=255, null=True, blank=True)
     registration_date = models.DateTimeField(auto_now_add=True)
