@@ -17,7 +17,6 @@ class ProfileViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        # Перевіряємо, чи вже є профіль для поточного користувача
         if Profile.objects.filter(user=request.user).exists():
             return Response({"detail": "Profile already exists."}, status=status.HTTP_400_BAD_REQUEST)
         return super().create(request, *args, **kwargs)

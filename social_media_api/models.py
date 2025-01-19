@@ -11,7 +11,7 @@ from user.models import User
 
 def actor_photo_path(instance: "Profile", filename: str) -> pathlib.Path:
     extension = pathlib.Path(filename).suffix
-    filename = f"{slugify(instance.last_name)}-{uuid.uuid4()}" + extension
+    filename = f"{slugify(instance.full_name)}-{uuid.uuid4()}" + extension
     return pathlib.Path("uploads/avatars/") / pathlib.Path(filename)
 
 

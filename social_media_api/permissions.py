@@ -25,19 +25,15 @@ class AllowListAndCreateOnly(BasePermission):
 
 class IsAuthenticatedAndOwnProfile(BasePermission):
     def has_permission(self, request, view):
-        # Дозволяємо створювати профіль, якщо користувач аутентифікований
         if request.method == "POST":
             return request.user and request.user.is_authenticated
-        return True  # Для інших методів (GET, PUT, PATCH, DELETE) дозволяємо лише власні профілі
+        return True
 
     def has_object_permission(self, request, view, obj):
-        # Для методів редагування перевіряємо, чи це власний профіль
         if request.method in ["PUT", "PATCH", "DELETE"]:
-            return obj == request.user.profile  # Припускаємо, що профіль зберігається у зв'язку з користувачем
+            return obj == request.user.profile
         return True
 
     def perform_create(self, serializer):
-        # Для методу POST встановлюємо поточного користувача в поле User
         if hasattr(self.request.user, 'profile'):
-            # Встановлюємо користувача як автора профілю
             serializer.save(user=self.request.user)
