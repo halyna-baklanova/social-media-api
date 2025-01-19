@@ -21,48 +21,19 @@ class ProfileViewSet(ModelViewSet):
             return Response({"detail": "Profile already exists."}, status=status.HTTP_400_BAD_REQUEST)
         return super().create(request, *args, **kwargs)
 
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = Profile.objects.all()
+        full_name = self.request.query_params.get("full_name")
+        if full_name is not None:
+            queryset = queryset.filter(full_name=full_name)
+        return queryset
 
 
 
-
-
-        # def get_queryset(self):
-    #     # Повертаємо всі профілі для всіх користувачів
-    #     return Profile.objects.all()
-    #
-    # def perform_create(self, serializer):
-    #     # Прив'язуємо профіль до поточного користувача без перевірки наявності
-    #     serializer.save(user=self.request.user)
-
-    # def get_queryset(self):
-    #     return Profile.objects.filter(user=self.request.user)
-    #
-    # def get_serializer_class(self):
-    #     if self.action == "list":
-    #         return ProfileListSerializer
-    #     if self.action == "retrieve":
-    #         return ProfileDetailSerializer
-    #     return self.serializer_class
-
-
-
-
-    # def get_queryset(self):
-    #     return Profile.objects.filter(user=self.request.user)
-    #
-    # def list(self, request, *args, **kwargs):
-    #     return super().list(request, *args, **kwargs)
-
-    # def create(self, request, *args, **kwargs):
-    #     if Profile.objects.filter(user=request.user).exists():
-    #         return Response(
-    #             {"detail": "Ви вже маєте профіль."},
-    #             status=status.HTTP_400_BAD_REQUEST,
-    #         )
-    #     return super().create(request, *args, **kwargs)
-    #
-    # def list(self, request, *args, **kwargs):
-    #     return super().list(request, *args, **kwargs)
 
 
 class PostViewSet(viewsets.ModelViewSet):
